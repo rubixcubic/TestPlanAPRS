@@ -1,0 +1,113 @@
+@startuml
+
+' Define Classes
+class RoboticSystem {
+    name: String
+    purpose: String
+}
+
+class Robot {
+    name: String
+    model: String
+    manufacturer: String
+}
+
+class MechanicalStructure {
+    name: String
+    type: String
+    material: String
+}
+
+class Dimension {
+    length: Float
+    width: Float
+    height: Float
+}
+
+class Sensor {
+    name: String
+    type: String
+    range: Float
+    resolution: String
+}
+
+class Actuator {
+    name: String
+    actuator_type: String
+    power_rating: Float
+    speed: Float
+}
+
+class ControlSystem {
+    name: String
+    processor_type: String
+    operating_system: String
+    memory: Integer
+}
+
+class Software {
+    name: String
+    version: String
+    function: String
+}
+
+class PowerSupply {
+    name: String
+    power_type: String
+    capacity: Float
+    voltage: Float
+}
+
+class CommunicationSystem {
+    name: String
+    communication_type: String
+    bandwidth: Float
+}
+
+class HumanMachineInterface {
+    name: String
+    interface_type: String
+}
+
+class DataStorage {
+    name: String
+    storage_type: String
+}
+
+' Define Relationships
+RoboticSystem "1" -- "1" Robot : consists_of
+
+Robot "1" -- "1" MechanicalStructure : has_mechanical_structure
+Robot "1" -- "1" ControlSystem : has_control_system
+Robot "0..*" -- "0..*" Sensor : has_sensor
+Robot "1..*" -- "1..*" Actuator : has_actuator
+Robot "1..*" -- "1..*" PowerSupply : has_power_supply
+Robot "1..*" -- "1..*" Software : runs_software
+Robot "0..*" -- "0..*" CommunicationSystem : has_communication_system
+Robot "0..*" -- "0..*" HumanMachineInterface : has_hmi
+Robot "0..*" -- "0..*" DataStorage : has_data_storage
+
+MechanicalStructure "1" -- "1" Dimension : has_dimensions
+
+' Additional components that might be part of the Robotic System but not the Robot
+RoboticSystem "0..*" -- "0..*" ExternalSoftware : uses_external_software
+RoboticSystem "0..*" -- "0..*" ControlInterface : has_control_interface
+RoboticSystem "0..*" -- "0..*" EnvironmentalModel : uses_environmental_model
+
+class ExternalSoftware {
+    name: String
+    version: String
+    function: String
+}
+
+class ControlInterface {
+    name: String
+    type: String
+}
+
+class EnvironmentalModel {
+    name: String
+    description: String
+}
+
+@enduml

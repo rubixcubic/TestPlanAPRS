@@ -1,40 +1,215 @@
 @startuml
 
-
-map MechanicalStructure {
-    name=>String
-    type=>String
-    material=>String
-    dimensions =>Dimension
+' Define Classes
+class RoboticSystem {
+    name: String
+    purpose: String
 }
 
-
-
-map Dimension{
-    length=>Float
-    width=>Float
-    height=>Float
+class Robot {
+    name: String
+    model: String
+    manufacturer: String
 }
 
-
-
-map Sensor {
-    name=>String
-    type=>String
-    range=>Float
-    resolution =>String
+class MechanicalStructure {
+    name: String
+    type: String
+    material: String
 }
 
-map PowerSupply {
-    name=>String
-    processor type=>String
-    operating system=>String
-    memory =>Integer
+class Dimension {
+    length: Float
+    width: Float
+    height: Float
 }
 
-MechanicalStructure::dimensions ..> Dimension : has_dimensions
-MechanicalStructure --> Sensor : has_sensor
-MechanicalStructure --> PowerSupply : has_power_supply
+class Sensor {
+    name: String
+    type: String
+    range: Float
+    resolution: String
+}
 
+class Actuator {
+    name: String
+    actuator_type: String
+    power_rating: Float
+    speed: Float
+}
+
+class ControlSystem {
+    name: String
+    processor_type: String
+    operating_system: String
+    memory: Integer
+}
+
+class Software {
+    name: String
+    version: String
+    function: String
+}
+
+class PowerSupply {
+    name: String
+    power_type: String
+    capacity: Float
+    voltage: Float
+}
+
+class CommunicationSystem {
+    name: String
+    communication_type: String
+    bandwidth: Float
+}
+
+class HumanMachineInterface {
+    name: String
+    interface_type: String
+}
+
+class DataStorage {
+    name: String
+    storage_type: String
+}
+
+class ExternalSoftware {
+    name: String
+    version: String
+    function: String
+}
+
+class ControlInterface {
+    name: String
+    type: String
+}
+
+class EnvironmentalModel {
+    name: String
+    description: String
+}
+
+' Define the abstract class AgilityAspect
+abstract class AgilityAspect {
+    description: String
+}
+
+' Define subclasses of AgilityAspect
+class PlanningAspect
+class SoftwareReconfigurabilityAspect
+class HardwareReconfigurabilityAspect
+class SensingAspect
+class PerceptionAspect
+class ExecutionAspect
+class TaskingAspect
+class TaskRepresentationAspect
+class ReasoningAspect
+class CommunicationsAspect
+
+' Establish inheritance relationships
+AgilityAspect <|-- PlanningAspect
+AgilityAspect <|-- SoftwareReconfigurabilityAspect
+AgilityAspect <|-- HardwareReconfigurabilityAspect
+AgilityAspect <|-- SensingAspect
+AgilityAspect <|-- PerceptionAspect
+AgilityAspect <|-- ExecutionAspect
+AgilityAspect <|-- TaskingAspect
+AgilityAspect <|-- TaskRepresentationAspect
+AgilityAspect <|-- ReasoningAspect
+AgilityAspect <|-- CommunicationsAspect
+
+' Define TestPlan class
+class TestPlan {
+    name: String
+    objective: String
+    description: String
+}
+
+class Metric {
+    name: String
+    unit: String
+    description: String
+}
+
+class Measurement {
+    value: Float
+    timestamp: DateTime
+    notes: String
+}
+
+class Experiment {
+    name: String
+    date: Date
+    description: String
+}
+
+' Define Relationships
+
+' Composition: RoboticSystem consists of one or more Robots
+RoboticSystem "1" *-- "1..*" Robot : consists_of
+
+' Composition: Robot has a MechanicalStructure
+Robot "1" *-- "1" MechanicalStructure : has_mechanical_structure
+
+' Composition: MechanicalStructure has Dimensions
+MechanicalStructure "1" *-- "1" Dimension : has_dimensions
+
+' Composition: Robot has a ControlSystem
+Robot "1" *-- "1" ControlSystem : has_control_system
+
+' Composition: Robot has Actuators
+Robot "1" *-- "1..*" Actuator : has_actuator
+
+' Aggregation: Robot has Sensors
+Robot "0..*" o-- "0..1" Sensor : has_sensor
+
+' Aggregation: Robot has PowerSupply
+Robot "1" o-- "1..*" PowerSupply : has_power_supply
+
+' Association: Robot runs Software
+Robot "1" --> "1..*" Software : runs_software
+
+' Aggregation: Robot has CommunicationSystems
+Robot "1" o-- "0..*" CommunicationSystem : has_communication_system
+
+' Aggregation: Robot has HumanMachineInterfaces
+Robot "1" o-- "0..*" HumanMachineInterface : has_hmi
+
+' Aggregation: Robot has DataStorage
+Robot "1" o-- "0..*" DataStorage : has_data_storage
+
+' Aggregation: RoboticSystem uses ExternalSoftware
+RoboticSystem "1" o-- "0..*" ExternalSoftware : uses_external_software
+
+' Aggregation: RoboticSystem has ControlInterfaces
+RoboticSystem "1" o-- "0..*" ControlInterface : has_control_interface
+
+' Aggregation: RoboticSystem uses EnvironmentalModels
+RoboticSystem "1" o-- "0..*" EnvironmentalModel : uses_environmental_model
+
+' TestPlan uses RoboticSystem
+TestPlan "1" --> "1" RoboticSystem : uses
+
+' TestPlan assesses AgilityAspect
+TestPlan "1" --> "1" AgilityAspect : assesses
+
+' Composition: TestPlan uses Metrics
+TestPlan "1" *-- "1..*" Metric : uses
+
+' Association: Metric measures AgilityAspect
+Metric "1" --> "1..*" AgilityAspect : measures
+
+' Composition: TestPlan produces Measurements
+TestPlan "1" *-- "0..*" Measurement : produces
+
+' Association: Measurement assesses AgilityAspect
+Measurement "1" --> "1" AgilityAspect : assesses
+
+' Experiment executes TestPlan
+Experiment "1" --> "1..*" TestPlan : executes
+
+' Experiment produces Measurements
+Experiment "1" --> "0..*" Measurement : produces
 
 @enduml
