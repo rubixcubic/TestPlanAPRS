@@ -32,7 +32,6 @@ map PowerSupply {
     memory =>Integer
 }
 
-
 MechanicalStructure::dimensions ..> Dimension : has_dimensions
 MechanicalStructure --> Sensor : has_sensor
 MechanicalStructure --> PowerSupply : has_power_supply
