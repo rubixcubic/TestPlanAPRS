@@ -1,0 +1,41 @@
+@startuml
+
+
+map MechanicalStructure {
+    name=>String
+    type=>String
+    material=>String
+    dimensions =>Dimension
+}
+
+
+
+map Dimension{
+    length=>Float
+    width=>Float
+    height=>Float
+}
+
+
+
+map Sensor {
+    name=>String
+    type=>String
+    range=>Float
+    resolution =>String
+}
+
+map PowerSupply {
+    name=>String
+    processor type=>String
+    operating system=>String
+    memory =>Integer
+}
+
+
+MechanicalStructure::dimensions ..> Dimension : has_dimensions
+MechanicalStructure --> Sensor : has_sensor
+MechanicalStructure --> PowerSupply : has_power_supply
+
+
+@enduml
